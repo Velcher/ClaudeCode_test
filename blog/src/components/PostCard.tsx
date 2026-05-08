@@ -16,20 +16,20 @@ export default function PostCard({ post, index }: Props) {
   const { frontmatter, slug } = post;
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: index * 0.1 }}>
-      <Link href={`/posts/${slug}`} className={`block rounded-card border p-5 mb-3.5 ${cfg.bg} ${cfg.border} ${cfg.glow} no-underline transition-all duration-300 hover:scale-[1.01] hover:shadow-[0_4px_20px_rgba(120,140,100,0.08)]`}>
-        <div className="flex items-center gap-4">
-          <div className={`w-10 h-10 rounded-[10px] border ${cfg.border} ${cfg.bg} flex items-center justify-center shrink-0`}>
-            <span className={`font-mono text-lg ${cfg.iconColor}`}>{cfg.icon}</span>
+      <Link href={`/posts/${slug}`} className={`block rounded-card border p-4 sm:p-5 mb-3.5 ${cfg.bg} ${cfg.border} ${cfg.glow} no-underline transition-all duration-300 hover:scale-[1.01] hover:shadow-[0_4px_20px_rgba(120,140,100,0.08)]`}>
+        <div className="flex items-center gap-3 sm:gap-4">
+          <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-[8px] sm:rounded-[10px] border ${cfg.border} ${cfg.bg} flex items-center justify-center shrink-0`}>
+            <span className={`font-mono text-base sm:text-lg ${cfg.iconColor}`}>{cfg.icon}</span>
           </div>
           <div className="flex-1 min-w-0">
-            <h2 className="text-[15px] font-semibold text-olive mb-1 leading-snug">{frontmatter.title}</h2>
-            <div className="flex items-center gap-1.5 flex-wrap text-[10px]">
+            <h2 className="text-sm sm:text-[15px] font-semibold text-olive mb-1 leading-snug truncate">{frontmatter.title}</h2>
+            <div className="flex items-center gap-1.5 flex-wrap text-[9px] sm:text-[10px]">
               <span className={cfg.dateColor}>{frontmatter.date}</span>
               <span className="text-olive-light/15">·</span>
-              {frontmatter.tags.map((tag) => (<span key={tag} className={`px-2 py-0.5 rounded-tag font-medium ${cfg.tagBg} ${cfg.tagColor}`}>#{tag}</span>))}
+              {frontmatter.tags.map((tag) => (<span key={tag} className={`px-1.5 sm:px-2 py-0.5 rounded-tag font-medium ${cfg.tagBg} ${cfg.tagColor}`}>#{tag}</span>))}
             </div>
           </div>
-          <span className={`font-mono text-sm shrink-0 ${cfg.arrowColor}`}>→</span>
+          <span className={`font-mono text-sm shrink-0 hidden sm:inline ${cfg.arrowColor}`}>→</span>
         </div>
       </Link>
     </motion.div>
