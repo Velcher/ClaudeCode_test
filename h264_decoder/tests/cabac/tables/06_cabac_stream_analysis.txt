@@ -1,0 +1,23 @@
+; CABAC Stream Analysis — Our Test Stream
+; File: E:\ClaudeCode_test\h264_decoder\tests\cabac\streams\cabac_1920x1080_1frame.h264
+; Size: 1512 bytes
+;
+; NAL unit structure:
+
+NAL #1: offset=0x0004 header=0x67 type=7(SPS) NRI=3
+  SPS: profile=77(Main) level=4.0
+  -> entropy_coding_mode NOT in SPS; it's in PPS
+
+NAL #2: offset=0x001F header=0x68 type=8(PPS) NRI=3
+  PPS: pic_parameter_set_id=0 seq_parameter_set_id=0
+       entropy_coding_mode_flag=1  <-- CABAC
+       -> Decoder MUST use CABAC tables!
+       -> Initialize 399 contexts from I-slice initValue table
+       -> Use transIdxLPS/MPS[64] for state updates
+
+NAL #3: offset=0x0027 header=0x06 type=6(SEI) NRI=0
+
+NAL #4: offset=0x0289 header=0x65 type=5(IDR slice) NRI=3
+
+; Total NAL units: 4
+; This stream requires CABAC: YES (entropy_coding_mode_flag=1)

@@ -1,0 +1,237 @@
+; CABAC Context Init Values - I SLICE (H.264 Table 9-4)
+; ======================================================
+; preCtxState = Clip3(1,126, ((m*SliceQPY)>>4) + n)
+; if preCtxState<=63: pStateIdx=63-preCtxState, valMPS=0
+; else:              pStateIdx=preCtxState-64, valMPS=1
+;
+
+; --- ctxIdx 0-2: unused in I slice
+
+; mb_type (I): ctxIdx 3..10
+  ctxIdx=  0  m=  20  n= -15  QP28->preCtx= 20 stateIdx=43 MPS=0
+  ctxIdx=  1  m=   2  n=  54  QP28->preCtx= 57 stateIdx= 6 MPS=0
+  ctxIdx=  2  m=   3  n=  74  QP28->preCtx= 79 stateIdx=15 MPS=1
+  ctxIdx=  3  m=  20  n= -15  QP28->preCtx= 20 stateIdx=43 MPS=0
+  ctxIdx=  4  m=   2  n=  54  QP28->preCtx= 57 stateIdx= 6 MPS=0
+  ctxIdx=  5  m=   3  n=  74  QP28->preCtx= 79 stateIdx=15 MPS=1
+  ctxIdx=  6  m= -28  n= 127  QP28->preCtx= 78 stateIdx=14 MPS=1
+  ctxIdx=  7  m= -23  n= 104  QP28->preCtx= 63 stateIdx= 0 MPS=0
+
+; --- ctxIdx 11-13: unused (mb_skip_flag P)
+
+; --- ctxIdx 14-39: unused (P/B mb_type, sub_mb_type)
+
+; mvd: ctxIdx 40..53
+  ctxIdx=  8  m=   9  n=  -1  QP28->preCtx= 14 stateIdx=49 MPS=0
+  ctxIdx=  9  m=   5  n=   0  QP28->preCtx=  8 stateIdx=55 MPS=0
+  ctxIdx= 10  m=   3  n=   2  QP28->preCtx=  7 stateIdx=56 MPS=0
+  ctxIdx= 11  m=   7  n=   0  QP28->preCtx= 12 stateIdx=51 MPS=0
+  ctxIdx= 12  m=   5  n=   6  QP28->preCtx= 14 stateIdx=49 MPS=0
+  ctxIdx= 13  m=   3  n=   3  QP28->preCtx=  8 stateIdx=55 MPS=0
+  ctxIdx= 14  m=   4  n=   0  QP28->preCtx=  7 stateIdx=56 MPS=0
+  ctxIdx= 15  m=   4  n=   0  QP28->preCtx=  7 stateIdx=56 MPS=0
+  ctxIdx= 16  m=   3  n=   0  QP28->preCtx=  5 stateIdx=58 MPS=0
+  ctxIdx= 17  m=  -2  n=  -1  QP28->preCtx=  1 stateIdx=62 MPS=0
+  ctxIdx= 18  m=   0  n=  -1  QP28->preCtx=  1 stateIdx=62 MPS=0
+  ctxIdx= 19  m=   1  n=   0  QP28->preCtx=  1 stateIdx=62 MPS=0
+  ctxIdx= 20  m=   1  n=   0  QP28->preCtx=  1 stateIdx=62 MPS=0
+  ctxIdx= 21  m=   1  n=   0  QP28->preCtx=  1 stateIdx=62 MPS=0
+
+; ref_idx: ctxIdx 54..59
+  ctxIdx= 22  m=  17  n= -13  QP28->preCtx= 16 stateIdx=47 MPS=0
+  ctxIdx= 23  m=  16  n=   9  QP28->preCtx= 37 stateIdx=26 MPS=0
+  ctxIdx= 24  m=   9  n=  -2  QP28->preCtx= 13 stateIdx=50 MPS=0
+  ctxIdx= 25  m=   5  n=  29  QP28->preCtx= 37 stateIdx=26 MPS=0
+  ctxIdx= 26  m=  -8  n=  40  QP28->preCtx= 26 stateIdx=37 MPS=0
+  ctxIdx= 27  m=   5  n=   0  QP28->preCtx=  8 stateIdx=55 MPS=0
+
+; mb_qp_delta: ctxIdx 60..63
+  ctxIdx= 28  m=  23  n=  33  QP28->preCtx= 73 stateIdx= 9 MPS=1
+  ctxIdx= 29  m=  23  n=   2  QP28->preCtx= 42 stateIdx=21 MPS=0
+  ctxIdx= 30  m=  21  n=   0  QP28->preCtx= 36 stateIdx=27 MPS=0
+  ctxIdx= 31  m=   1  n=   9  QP28->preCtx= 10 stateIdx=53 MPS=0
+
+; intra_chroma_pred_mode: ctxIdx 64..67
+  ctxIdx= 32  m= -17  n=   6  QP28->preCtx=  1 stateIdx=62 MPS=0
+  ctxIdx= 33  m= -11  n=  33  QP28->preCtx= 13 stateIdx=50 MPS=0
+  ctxIdx= 34  m= -30  n=  44  QP28->preCtx=  1 stateIdx=62 MPS=0
+  ctxIdx= 35  m= -17  n= -21  QP28->preCtx=  1 stateIdx=62 MPS=0
+
+; prev_intra4x4_pred_mode: ctxIdx 68
+  ctxIdx= 36  m=   3  n= -42  QP28->preCtx=  1 stateIdx=62 MPS=0
+
+; rem_intra4x4_pred_mode: ctxIdx 69
+  ctxIdx= 37  m=   0  n= -28  QP28->preCtx=  1 stateIdx=62 MPS=0
+
+; mb_field_decoding_flag: ctxIdx 70..72
+  ctxIdx= 38  m=   2  n=  12  QP28->preCtx= 15 stateIdx=48 MPS=0
+  ctxIdx= 39  m=   5  n=  41  QP28->preCtx= 49 stateIdx=14 MPS=0
+  ctxIdx= 40  m=   1  n=  41  QP28->preCtx= 42 stateIdx=21 MPS=0
+
+; coded_block_pattern (luma): ctxIdx 73..76
+  ctxIdx= 41  m=   5  n=  39  QP28->preCtx= 47 stateIdx=16 MPS=0
+  ctxIdx= 42  m=  14  n=   4  QP28->preCtx= 28 stateIdx=35 MPS=0
+  ctxIdx= 43  m=  12  n=  33  QP28->preCtx= 54 stateIdx= 9 MPS=0
+  ctxIdx= 44  m=   3  n=  27  QP28->preCtx= 32 stateIdx=31 MPS=0
+
+; coded_block_pattern (chroma): ctxIdx 77..84
+  ctxIdx= 45  m=   5  n=  39  QP28->preCtx= 47 stateIdx=16 MPS=0
+  ctxIdx= 46  m=  14  n=   4  QP28->preCtx= 28 stateIdx=35 MPS=0
+  ctxIdx= 47  m=  12  n=  33  QP28->preCtx= 54 stateIdx= 9 MPS=0
+  ctxIdx= 48  m=   3  n=  27  QP28->preCtx= 32 stateIdx=31 MPS=0
+  ctxIdx= 49  m=   5  n=  39  QP28->preCtx= 47 stateIdx=16 MPS=0
+  ctxIdx= 50  m=  14  n=   4  QP28->preCtx= 28 stateIdx=35 MPS=0
+  ctxIdx= 51  m=  12  n=  33  QP28->preCtx= 54 stateIdx= 9 MPS=0
+  ctxIdx= 52  m=   3  n=  27  QP28->preCtx= 32 stateIdx=31 MPS=0
+
+; coded_block_flag: ctxIdx 85..104
+  ctxIdx= 53  m=  17  n= -13  QP28->preCtx= 16 stateIdx=47 MPS=0
+  ctxIdx= 54  m=   0  n=  40  QP28->preCtx= 40 stateIdx=23 MPS=0
+  ctxIdx= 55  m=   0  n=  40  QP28->preCtx= 40 stateIdx=23 MPS=0
+  ctxIdx= 56  m=   0  n=  40  QP28->preCtx= 40 stateIdx=23 MPS=0
+  ctxIdx= 57  m=   0  n=  40  QP28->preCtx= 40 stateIdx=23 MPS=0
+  ctxIdx= 58  m=   0  n=  40  QP28->preCtx= 40 stateIdx=23 MPS=0
+  ctxIdx= 59  m=   0  n=  40  QP28->preCtx= 40 stateIdx=23 MPS=0
+  ctxIdx= 60  m=   0  n=  40  QP28->preCtx= 40 stateIdx=23 MPS=0
+  ctxIdx= 61  m=   0  n=  40  QP28->preCtx= 40 stateIdx=23 MPS=0
+  ctxIdx= 62  m=   0  n=  40  QP28->preCtx= 40 stateIdx=23 MPS=0
+  ctxIdx= 63  m=   0  n=  40  QP28->preCtx= 40 stateIdx=23 MPS=0
+  ctxIdx= 64  m=   0  n=  40  QP28->preCtx= 40 stateIdx=23 MPS=0
+  ctxIdx= 65  m=   0  n=  40  QP28->preCtx= 40 stateIdx=23 MPS=0
+  ctxIdx= 66  m=   0  n=  40  QP28->preCtx= 40 stateIdx=23 MPS=0
+  ctxIdx= 67  m=   0  n=  40  QP28->preCtx= 40 stateIdx=23 MPS=0
+  ctxIdx= 68  m=   0  n=  40  QP28->preCtx= 40 stateIdx=23 MPS=0
+  ctxIdx= 69  m=  17  n= -13  QP28->preCtx= 16 stateIdx=47 MPS=0
+  ctxIdx= 70  m=  17  n= -13  QP28->preCtx= 16 stateIdx=47 MPS=0
+  ctxIdx= 71  m=  17  n= -13  QP28->preCtx= 16 stateIdx=47 MPS=0
+  ctxIdx= 72  m=  17  n= -13  QP28->preCtx= 16 stateIdx=47 MPS=0
+
+; significant_coeff_flag (Intra frame): ctxIdx 105..164
+  ctxIdx= 73  m=   0  n=  41  QP28->preCtx= 41 stateIdx=22 MPS=0
+  ctxIdx= 74  m=   0  n=  63  QP28->preCtx= 63 stateIdx= 0 MPS=0
+  ctxIdx= 75  m=   0  n=  63  QP28->preCtx= 63 stateIdx= 0 MPS=0
+  ctxIdx= 76  m=   0  n=  63  QP28->preCtx= 63 stateIdx= 0 MPS=0
+  ctxIdx= 77  m=  -9  n=  83  QP28->preCtx= 67 stateIdx= 3 MPS=1
+  ctxIdx= 78  m=   4  n=  86  QP28->preCtx= 93 stateIdx=29 MPS=1
+  ctxIdx= 79  m=   0  n=  97  QP28->preCtx= 97 stateIdx=33 MPS=1
+  ctxIdx= 80  m=  -7  n=  72  QP28->preCtx= 59 stateIdx= 4 MPS=0
+  ctxIdx= 81  m=  13  n=  41  QP28->preCtx= 63 stateIdx= 0 MPS=0
+  ctxIdx= 82  m=   3  n=  62  QP28->preCtx= 67 stateIdx= 3 MPS=1
+  ctxIdx= 83  m=   7  n=  41  QP28->preCtx= 53 stateIdx=10 MPS=0
+  ctxIdx= 84  m=  14  n=  63  QP28->preCtx= 87 stateIdx=23 MPS=1
+  ctxIdx= 85  m=  14  n=  63  QP28->preCtx= 87 stateIdx=23 MPS=1
+  ctxIdx= 86  m=  14  n=  63  QP28->preCtx= 87 stateIdx=23 MPS=1
+  ctxIdx= 87  m=  10  n=  63  QP28->preCtx= 80 stateIdx=16 MPS=1
+  ctxIdx= 88  m=   7  n=  56  QP28->preCtx= 68 stateIdx= 4 MPS=1
+  ctxIdx= 89  m=   7  n=  51  QP28->preCtx= 63 stateIdx= 0 MPS=0
+  ctxIdx= 90  m=  15  n=  51  QP28->preCtx= 77 stateIdx=13 MPS=1
+  ctxIdx= 91  m=  15  n=  54  QP28->preCtx= 80 stateIdx=16 MPS=1
+  ctxIdx= 92  m=   9  n=  58  QP28->preCtx= 73 stateIdx= 9 MPS=1
+  ctxIdx= 93  m=   6  n=  55  QP28->preCtx= 65 stateIdx= 1 MPS=1
+  ctxIdx= 94  m=   6  n=  58  QP28->preCtx= 68 stateIdx= 4 MPS=1
+  ctxIdx= 95  m=   8  n=  55  QP28->preCtx= 69 stateIdx= 5 MPS=1
+  ctxIdx= 96  m=   6  n=  51  QP28->preCtx= 61 stateIdx= 2 MPS=0
+  ctxIdx= 97  m=  12  n=  53  QP28->preCtx= 74 stateIdx=10 MPS=1
+  ctxIdx= 98  m=  15  n=  56  QP28->preCtx= 82 stateIdx=18 MPS=1
+  ctxIdx= 99  m=  14  n=  51  QP28->preCtx= 75 stateIdx=11 MPS=1
+  ctxIdx=100  m=  12  n=  55  QP28->preCtx= 76 stateIdx=12 MPS=1
+  ctxIdx=101  m=  14  n=  59  QP28->preCtx= 83 stateIdx=19 MPS=1
+  ctxIdx=102  m=  13  n=  61  QP28->preCtx= 83 stateIdx=19 MPS=1
+  ctxIdx=103  m=  14  n=  49  QP28->preCtx= 73 stateIdx= 9 MPS=1
+  ctxIdx=104  m=   1  n= -16  QP28->preCtx=  1 stateIdx=62 MPS=0
+  ctxIdx=105  m=  12  n=  52  QP28->preCtx= 73 stateIdx= 9 MPS=1
+  ctxIdx=106  m=   7  n=  52  QP28->preCtx= 64 stateIdx= 0 MPS=1
+  ctxIdx=107  m=  -5  n=  -2  QP28->preCtx=  1 stateIdx=62 MPS=0
+  ctxIdx=108  m=   0  n=  41  QP28->preCtx= 41 stateIdx=22 MPS=0
+  ctxIdx=109  m=   0  n=  63  QP28->preCtx= 63 stateIdx= 0 MPS=0
+  ctxIdx=110  m=   0  n=  63  QP28->preCtx= 63 stateIdx= 0 MPS=0
+  ctxIdx=111  m=   0  n=  63  QP28->preCtx= 63 stateIdx= 0 MPS=0
+  ctxIdx=112  m=  -9  n=  83  QP28->preCtx= 67 stateIdx= 3 MPS=1
+  ctxIdx=113  m=   4  n=  86  QP28->preCtx= 93 stateIdx=29 MPS=1
+  ctxIdx=114  m=   0  n=  97  QP28->preCtx= 97 stateIdx=33 MPS=1
+  ctxIdx=115  m=  -7  n=  72  QP28->preCtx= 59 stateIdx= 4 MPS=0
+  ctxIdx=116  m=  13  n=  41  QP28->preCtx= 63 stateIdx= 0 MPS=0
+  ctxIdx=117  m=   3  n=  62  QP28->preCtx= 67 stateIdx= 3 MPS=1
+  ctxIdx=118  m=   7  n=  41  QP28->preCtx= 53 stateIdx=10 MPS=0
+  ctxIdx=119  m=  14  n=  63  QP28->preCtx= 87 stateIdx=23 MPS=1
+  ctxIdx=120  m=  14  n=  63  QP28->preCtx= 87 stateIdx=23 MPS=1
+  ctxIdx=121  m=  14  n=  63  QP28->preCtx= 87 stateIdx=23 MPS=1
+  ctxIdx=122  m=  10  n=  63  QP28->preCtx= 80 stateIdx=16 MPS=1
+  ctxIdx=123  m=   7  n=  56  QP28->preCtx= 68 stateIdx= 4 MPS=1
+  ctxIdx=124  m=   7  n=  51  QP28->preCtx= 63 stateIdx= 0 MPS=0
+  ctxIdx=125  m=  15  n=  51  QP28->preCtx= 77 stateIdx=13 MPS=1
+  ctxIdx=126  m=  15  n=  54  QP28->preCtx= 80 stateIdx=16 MPS=1
+  ctxIdx=127  m=   9  n=  58  QP28->preCtx= 73 stateIdx= 9 MPS=1
+  ctxIdx=128  m=   6  n=  55  QP28->preCtx= 65 stateIdx= 1 MPS=1
+  ctxIdx=129  m=   6  n=  58  QP28->preCtx= 68 stateIdx= 4 MPS=1
+  ctxIdx=130  m=   8  n=  55  QP28->preCtx= 69 stateIdx= 5 MPS=1
+  ctxIdx=131  m=   6  n=  51  QP28->preCtx= 61 stateIdx= 2 MPS=0
+  ctxIdx=132  m=  12  n=  53  QP28->preCtx= 74 stateIdx=10 MPS=1
+
+; significant_coeff_flag (extra): ctxIdx 165
+  ctxIdx=133  m=   6  n=  37  QP28->preCtx= 47 stateIdx=16 MPS=0
+
+; last_significant_coeff_flag (Intra frame): ctxIdx 166..225
+  ctxIdx=134  m=   6  n=  28  QP28->preCtx= 38 stateIdx=25 MPS=0
+  ctxIdx=135  m=  12  n=  39  QP28->preCtx= 60 stateIdx= 3 MPS=0
+  ctxIdx=136  m=   5  n=  53  QP28->preCtx= 61 stateIdx= 2 MPS=0
+  ctxIdx=137  m=  14  n=  38  QP28->preCtx= 62 stateIdx= 1 MPS=0
+  ctxIdx=138  m=  14  n=  63  QP28->preCtx= 87 stateIdx=23 MPS=1
+  ctxIdx=139  m=  11  n=  39  QP28->preCtx= 58 stateIdx= 5 MPS=0
+  ctxIdx=140  m=   9  n=  33  QP28->preCtx= 48 stateIdx=15 MPS=0
+  ctxIdx=141  m=  11  n=  41  QP28->preCtx= 60 stateIdx= 3 MPS=0
+  ctxIdx=142  m=   7  n=  42  QP28->preCtx= 54 stateIdx= 9 MPS=0
+  ctxIdx=143  m=  15  n=  11  QP28->preCtx= 37 stateIdx=26 MPS=0
+  ctxIdx=144  m=  15  n=  49  QP28->preCtx= 75 stateIdx=11 MPS=1
+  ctxIdx=145  m=  12  n=   9  QP28->preCtx= 30 stateIdx=33 MPS=0
+  ctxIdx=146  m=   7  n=  15  QP28->preCtx= 27 stateIdx=36 MPS=0
+  ctxIdx=147  m=   3  n=  -6  QP28->preCtx=  1 stateIdx=62 MPS=0
+  ctxIdx=148  m=   6  n=  12  QP28->preCtx= 22 stateIdx=41 MPS=0
+  ctxIdx=149  m=  15  n=  47  QP28->preCtx= 73 stateIdx= 9 MPS=1
+  ctxIdx=150  m=  14  n=  63  QP28->preCtx= 87 stateIdx=23 MPS=1
+  ctxIdx=151  m=   9  n=  50  QP28->preCtx= 65 stateIdx= 1 MPS=1
+  ctxIdx=152  m=   8  n=  43  QP28->preCtx= 57 stateIdx= 6 MPS=0
+  ctxIdx=153  m=  10  n=  44  QP28->preCtx= 61 stateIdx= 2 MPS=0
+  ctxIdx=154  m=   8  n=  44  QP28->preCtx= 58 stateIdx= 5 MPS=0
+  ctxIdx=155  m=  12  n=  48  QP28->preCtx= 69 stateIdx= 5 MPS=1
+  ctxIdx=156  m=  10  n=  49  QP28->preCtx= 66 stateIdx= 2 MPS=1
+  ctxIdx=157  m=   9  n=  42  QP28->preCtx= 57 stateIdx= 6 MPS=0
+  ctxIdx=158  m=  10  n=  49  QP28->preCtx= 66 stateIdx= 2 MPS=1
+  ctxIdx=159  m=  15  n=  63  QP28->preCtx= 89 stateIdx=25 MPS=1
+  ctxIdx=160  m=  14  n=  63  QP28->preCtx= 87 stateIdx=23 MPS=1
+  ctxIdx=161  m=  12  n=  54  QP28->preCtx= 75 stateIdx=11 MPS=1
+  ctxIdx=162  m=   9  n=  47  QP28->preCtx= 62 stateIdx= 1 MPS=0
+  ctxIdx=163  m=  12  n=  15  QP28->preCtx= 36 stateIdx=27 MPS=0
+  ctxIdx=164  m=  14  n=  63  QP28->preCtx= 87 stateIdx=23 MPS=1
+  ctxIdx=165  m=  12  n=  50  QP28->preCtx= 71 stateIdx= 7 MPS=1
+  ctxIdx=166  m=  12  n=  50  QP28->preCtx= 71 stateIdx= 7 MPS=1
+  ctxIdx=167  m=  15  n=  63  QP28->preCtx= 89 stateIdx=25 MPS=1
+  ctxIdx=168  m=  12  n=  57  QP28->preCtx= 78 stateIdx=14 MPS=1
+  ctxIdx=169  m=  14  n=  63  QP28->preCtx= 87 stateIdx=23 MPS=1
+  ctxIdx=170  m=  12  n=  62  QP28->preCtx= 83 stateIdx=19 MPS=1
+  ctxIdx=171  m=  15  n=  45  QP28->preCtx= 71 stateIdx= 7 MPS=1
+  ctxIdx=172  m=  11  n=  50  QP28->preCtx= 69 stateIdx= 5 MPS=1
+  ctxIdx=173  m=  11  n=  47  QP28->preCtx= 66 stateIdx= 2 MPS=1
+  ctxIdx=174  m=  11  n=  45  QP28->preCtx= 64 stateIdx= 0 MPS=1
+  ctxIdx=175  m=  15  n=  63  QP28->preCtx= 89 stateIdx=25 MPS=1
+  ctxIdx=176  m=  12  n=  63  QP28->preCtx= 84 stateIdx=20 MPS=1
+  ctxIdx=177  m=  12  n=  63  QP28->preCtx= 84 stateIdx=20 MPS=1
+  ctxIdx=178  m=  14  n=  63  QP28->preCtx= 87 stateIdx=23 MPS=1
+  ctxIdx=179  m=   6  n=  28  QP28->preCtx= 38 stateIdx=25 MPS=0
+  ctxIdx=180  m=  12  n=  39  QP28->preCtx= 60 stateIdx= 3 MPS=0
+  ctxIdx=181  m=   5  n=  53  QP28->preCtx= 61 stateIdx= 2 MPS=0
+  ctxIdx=182  m=  14  n=  38  QP28->preCtx= 62 stateIdx= 1 MPS=0
+  ctxIdx=183  m=  14  n=  63  QP28->preCtx= 87 stateIdx=23 MPS=1
+  ctxIdx=184  m=  11  n=  39  QP28->preCtx= 58 stateIdx= 5 MPS=0
+  ctxIdx=185  m=   9  n=  33  QP28->preCtx= 48 stateIdx=15 MPS=0
+  ctxIdx=186  m=  11  n=  41  QP28->preCtx= 60 stateIdx= 3 MPS=0
+  ctxIdx=187  m=   7  n=  42  QP28->preCtx= 54 stateIdx= 9 MPS=0
+  ctxIdx=188  m=  15  n=  11  QP28->preCtx= 37 stateIdx=26 MPS=0
+  ctxIdx=189  m=  15  n=  49  QP28->preCtx= 75 stateIdx=11 MPS=1
+  ctxIdx=190  m=  12  n=   9  QP28->preCtx= 30 stateIdx=33 MPS=0
+  ctxIdx=191  m=   7  n=  15  QP28->preCtx= 27 stateIdx=36 MPS=0
+  ctxIdx=192  m=   3  n=  -6  QP28->preCtx=  1 stateIdx=62 MPS=0
+  ctxIdx=193  m=   6  n=  12  QP28->preCtx= 22 stateIdx=41 MPS=0
+
+; Total I-slice contexts written: 194
+; Full standard table: H.264 Rec. Tables 9-4, 9-27~9-34
