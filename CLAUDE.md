@@ -8,6 +8,7 @@
 - 本地命令可直接执行（add、status、diff、log 等）
 - **需要确认的操作**：git commit、影响 GitHub 公开页面的操作（push、新分支首次推送、gh pr create 等）、新建分支前通知用户（含分支名和用途）
 - 同样适用于 gh 相关命令
+- **不下载 GitHub 仓库**：不执行 `git clone`、`curl`/`wget` 下载 GitHub 仓库或 zip，因为代理速度很慢。需要克隆/下载时告知用户手动操作
 - 保持提交历史干净，尽可能少 commit
 - **执行大型修改、不确定结果的修改、或删除操作前，先 git commit 保存当前状态**，方便回退。提交信息以"快照："开头，如 `快照：修改 code-review-graph 可视化模板前`
 
