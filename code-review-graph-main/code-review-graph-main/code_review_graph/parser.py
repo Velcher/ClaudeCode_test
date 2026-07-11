@@ -400,7 +400,8 @@ _CALL_TYPES: dict[str, list[str]] = {
         "macrocall_expression",
     ],
     "verilog": [
-        "module_instantiation", "function_subroutine_call", "subroutine_call", "system_tf_call"
+        "module_instantiation", "interface_instantiation",
+        "function_subroutine_call", "subroutine_call", "system_tf_call"
         ],
     # GDScript: bare calls produce ``call``; ``obj.method()`` is an
     # ``attribute`` node whose right-hand side is an ``attribute_call``.
@@ -6505,9 +6506,16 @@ class CodeParser:
                     return txt or None
             return None
 
-        # Verilog/SystemVerilog: module_instantiation's first child is the module name
-        if language == "verilog" and node.type == "module_instantiation":
-            if first.type == "simple_identifier":
+        # Verilog/SystemVerilog: module_instantiation / interface_instantiation
+        # first child is the module name.  interface_instantiation is used by
+        # tree-sitter-verilog when there is no #(parameter) override — both
+        # node types represent module instances and should create CALLS edges.
+        # interface_instantiation's first child is ``interface_identifier``
+        # instead of ``simple_identifier`` (tree-sitter-verilog grammar detail).
+        if language == "verilog" and node.type in (
+            "module_instantiation", "interface_instantiation",
+        ):
+            if first.type in ("simple_identifier", "interface_identifier"):
                 return first.text.decode("utf-8", errors="replace")
             return None
 
