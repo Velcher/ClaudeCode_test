@@ -1,7 +1,7 @@
 # code-review-graph 踩坑记录
 
 > 日期：2026-07-11
-> 项目：cv32e40p、Ibex、async_fifo
+> 项目：cv32e40p、Ibex、verilog-pcie、async_fifo
 
 ---
 
@@ -187,3 +187,35 @@ code-review-graph visualize
 | `check_parse.py` | `E:\ClaudeCode_test\` | 独立版检查脚本（命令行直接调用） |
 | `sync_crg.py` | `E:\ClaudeCode_test\` | 同步修复版源码到 site-packages |
 | `offline_pkgs/` | `E:\ClaudeCode_test\` | 离线部署包（80 个 .whl + README） |
+
+---
+
+## 8. `pcie_s10_if.v` 解析失败（6% ERROR）：`#(` 后跟注释导致模块声明丢失
+
+**现象**：`pcie_s10_if` 在图中没有 Class 节点，`pcie_s10_msi` 被它实例化了但图中无 CALLS 边。
+
+**排查**：`parse_report.txt` 显示 `pcie_s10_if.v` 6.0% ERROR（❌），对比同项目 `pcie_s10_if_tx.v` 仅 0.2% ERROR（✅）。
+
+**根因**：tree-sitter-verilog 不支持 `#(` 和第一个 `parameter` 之间插入注释：
+
+```verilog
+// ❌ tree-sitter 炸了（6% ERROR）
+module pcie_s10_if #
+(
+    // H-Tile/L-Tile AVST segment count    ← 这个注释导致解析失败
+    parameter SEG_COUNT = 1,
+    ...
+
+// ✅ 解析正常（0.2% ERROR）
+module pcie_s10_if_tx #
+(
+    parameter SEG_COUNT = 1,               ← 没注释
+    ...
+```
+
+不是 `module #(params) (ports)` 这种写法本身有问题——同项目的 `pcie_s10_if_tx.v` 和 Ibex 全部正常。只是 tree-sitter-verilog 的语法规则不认 `#(` 后紧跟注释这种写法。
+
+**教训**：
+- 手写 Verilog 时，`#(` 和第一个 `parameter` 之间不要插注释
+- 遇到 ERROR 率超过 5% 的文件，优先检查模块声明处的特殊写法
+- 这个限制不影响传统 Verilog-2001 的无参数模块（`module my_mod (...)` 不会有这个问题）
