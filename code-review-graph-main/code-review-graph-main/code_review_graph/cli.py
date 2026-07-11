@@ -983,6 +983,25 @@ def main() -> None:
                 if getattr(args, "skip_postprocess", False)
                 else ("minimal" if getattr(args, "skip_flows", False) else "full")
             )
+            # --- 解析质量预检查 ---
+            try:
+                from .parse_check import run_quick_check
+                quick = run_quick_check(repo_root)
+                if quick["verilog_files"] > 0:
+                    logger.info(
+                        "Parse check: %d/%d files OK (warn=%d, bad=%d)",
+                        quick["ok"], quick["verilog_files"], quick["warn"], quick["bad"],
+                    )
+                    if quick["bad"] > 0:
+                        logger.warning(
+                            "Bad files may cause missing edges — see %s",
+                            (repo_root / ".code-review-graph" / "parse_report.txt"),
+                        )
+            except ImportError:
+                pass  # tree-sitter not installed
+            except Exception as exc:
+                logger.debug("Parse check skipped: %s", exc)
+            # --- 解析质量预检查结束 ---
             from .tools.build import build_or_update_graph
 
             result = build_or_update_graph(
