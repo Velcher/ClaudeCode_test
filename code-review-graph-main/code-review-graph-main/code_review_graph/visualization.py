@@ -856,7 +856,13 @@ function moveTooltip(ev) {
 }
 function hideTooltip() { tooltip.classList.remove("visible"); }
 var W = innerWidth, H = innerHeight;
-var svg = d3.select("svg").attr("viewBox", [0, 0, W, H]);
+var svg = d3.select("svg")
+  .attr("viewBox", [0, 0, W, H])
+  .style("position", "fixed")
+  .style("top", "0px")
+  .style("left", "0px")
+  .style("width", W + "px")
+  .style("height", H + "px");
 var gRoot = svg.append("g");
 var currentTransform = d3.zoomIdentity;
 var zoomBehavior = d3.zoom()
@@ -1073,7 +1079,20 @@ if (N > 2000) {
 updateNodes();
 function fitGraph() {
   var b = gRoot.node().getBBox();
-  if (b.width === 0 || b.height === 0) return;
+  if (b.width === 0 || b.height === 0) {
+    // Fallback: compute bounding box from node simulation coordinates
+    var minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    nodes.forEach(function(n) {
+      if (n._hidden || n.x == null || n.y == null) return;
+      var r = degreeRadius(n) + 10;
+      if (n.x - r < minX) minX = n.x - r;
+      if (n.y - r < minY) minY = n.y - r;
+      if (n.x + r > maxX) maxX = n.x + r;
+      if (n.y + r > maxY) maxY = n.y + r;
+    });
+    if (!isFinite(minX)) return;
+    b = {x: minX, y: minY, width: maxX - minX, height: maxY - minY};
+  }
   var pad = 0.1;
   var fw = b.width * (1 + 2*pad), fh = b.height * (1 + 2*pad);
   var s = Math.min(W / fw, H / fh, 2.5);
@@ -1088,6 +1107,7 @@ if (nodes.length === 0) {
 }
 simulation.on("end", function() {
   loadingOverlay.classList.add("hidden");
+  simulation.tick(200);
   fitGraph();
 });
 function zoomToNode(qn) {
@@ -1756,7 +1776,13 @@ function hideTooltip() { tooltip.classList.remove("visible"); }
 
 /* --- SVG setup --- */
 var W = innerWidth, H = innerHeight;
-var svg = d3.select("svg").attr("viewBox", [0, 0, W, H]);
+var svg = d3.select("svg")
+  .attr("viewBox", [0, 0, W, H])
+  .style("position", "fixed")
+  .style("top", "0px")
+  .style("left", "0px")
+  .style("width", W + "px")
+  .style("height", H + "px");
 var gRoot = svg.append("g");
 var currentTransform = d3.zoomIdentity;
 var zoomBehavior = d3.zoom()
@@ -1922,7 +1948,10 @@ function renderGraph(nodesData, edgesData, drillDown) {
       .attr("y", function(d) { return d.y; });
   });
 
-  simulation.on("end", fitGraph);
+  simulation.on("end", function() {
+    simulation.tick(200);
+    fitGraph();
+  });
   updateLabelVisibility();
 }
 
@@ -1976,7 +2005,20 @@ function highlightConnected(d, on) {
 
 function fitGraph() {
   var b = gRoot.node().getBBox();
-  if (b.width === 0 || b.height === 0) return;
+  if (b.width === 0 || b.height === 0) {
+    // Fallback: compute bounding box from node simulation coordinates
+    var minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    currentNodes.forEach(function(n) {
+      if (n._hidden || n.x == null || n.y == null) return;
+      var r = nodeRadius(n) + 10;
+      if (n.x - r < minX) minX = n.x - r;
+      if (n.y - r < minY) minY = n.y - r;
+      if (n.x + r > maxX) maxX = n.x + r;
+      if (n.y + r > maxY) maxY = n.y + r;
+    });
+    if (!isFinite(minX)) return;
+    b = {x: minX, y: minY, width: maxX - minX, height: maxY - minY};
+  }
   var pad = 0.1;
   var fw = b.width * (1 + 2 * pad), fh = b.height * (1 + 2 * pad);
   var s = Math.min(W / fw, H / fh, 2.5);
