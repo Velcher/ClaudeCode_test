@@ -206,6 +206,6 @@ svg.transition().duration(500).call(zoomBehavior.transform, d3.zoomIdentity.tran
     -   方式：进入 `rtl` 目录执行 `git init`（避免管理到上层验证脚本及工具链文件）。
 
 ### 4. 打开 graph.html 一直显示 Loading / 图不动
--   **原因**：使用旧版模板生成的 HTML 从 `d3js.org` CDN 加载 D3.js，内网被拦截。
--   **解决**：本修复版已将 D3.js 内联到 HTML 中（280KB，完全自包含）。重新执行 `code-review-graph visualize` 生成即可。验证命令：`grep "Copyright.*Mike Bostock" .code-review-graph\graph.html` 有输出说明已内联。
+-   **原因**：旧版模板生成的 HTML 从 `d3js.org` CDN 加载 D3.js，内网被拦截。
+-   **解决**（✅ 已修复）：本修复版已将 D3.js 内联到 HTML 中（280KB，完全自包含）。重新执行 `code-review-graph visualize` 生成即可。验证：`grep "Copyright.*Mike Bostock" .code-review-graph\graph.html` 有输出说明已内联。
 

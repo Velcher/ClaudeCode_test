@@ -234,7 +234,7 @@ module pcie_s10_if_tx #
 ```
 内网环境或代理环境下，`d3js.org` 无法访问，整个页面无法渲染。
 
-**修复**：已修改 `visualization.py` 模板，将 CDN 标签替换为**内联 280KB D3.js 代码**。生成的 `graph.html` 约 330KB，完全自包含，不依赖任何外部网络资源。`file://` 双击即可使用，内网环境也无需额外配置。
+**修复**（✅ 已实施）：修改了 `visualization.py` 的 `_HTML_TEMPLATE` 和 `_AGGREGATED_HTML_TEMPLATE`，将 CDN `<script src="d3js.org">` 替换为 `<script>d3.v7.min.js 内联代码</script>`（280KB）。现在 `code-review-graph visualize` 生成的 `graph.html` 约 330KB，**完全自包含，零网络依赖**。`file://` 双击即用，内网/离线环境均可。
 
 **验证**：
 ```bash
