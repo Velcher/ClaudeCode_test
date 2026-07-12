@@ -219,3 +219,30 @@ module pcie_s10_if_tx #
 - 手写 Verilog 时，`#(` 和第一个 `parameter` 之间不要插注释
 - 遇到 ERROR 率超过 5% 的文件，优先检查模块声明处的特殊写法
 - 这个限制不影响传统 Verilog-2001 的无参数模块（`module my_mod (...)` 不会有这个问题）
+
+---
+
+## 9. graph.html 打开一直 "Laying out graph..." / D3.js CDN 加载失败
+
+**现象**：双击 `graph.html`，一直显示 loading spinner 和 "Laying out graph..."，永远不结束。
+
+**排查**：F12 打开 Console，输入 `typeof d3` — 返回 `"undefined"` 说明 D3.js 没加载。Network 面板显示 `d3js.org` 请求被代理/防火墙拦截。
+
+**根因**：原版 `graph.html` 通过 CDN 加载 D3.js：
+```html
+<script src="https://d3js.org/d3.v7.min.js" ...></script>
+```
+内网环境或代理环境下，`d3js.org` 无法访问，整个页面无法渲染。
+
+**修复**：已修改 `visualization.py` 模板，将 CDN 标签替换为**内联 280KB D3.js 代码**。生成的 `graph.html` 约 330KB，完全自包含，不依赖任何外部网络资源。`file://` 双击即可使用，内网环境也无需额外配置。
+
+**验证**：
+```bash
+# 检查生成的 HTML 是否自包含
+grep "Copyright.*Mike Bostock" <项目>\.code-review-graph\graph.html
+# 如果有输出 → D3.js 已内联
+grep "d3js.org" <项目>\.code-review-graph\graph.html
+# 如果只有版权注释无 CDN 链接 → 自包含
+```
+
+**教训**：内网部署的工具，所有外部依赖必须下载后本地化或内联 - 不能依赖 CDN。

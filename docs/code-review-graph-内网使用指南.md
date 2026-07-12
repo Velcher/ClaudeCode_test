@@ -156,11 +156,15 @@
 
 ---
 
-## 七、解决可视化图块空白或节点重叠问题
+## 七、打开 graph.html 注意事项
 
-如果你双击生成的 `graph.html` （即使用 `file://` 协议），可能会遇到节点全部堆积在左上角或无法完整显示的情况。这是浏览器在 `file://` 协议下渲染 SVG 的兼容性问题。
+### 自包含设计
 
-**解决方案**：按 F12 打开开发者工具（DevTools），进入 Console 选项卡，粘贴以下代码并回车执行。图块将自动扩展并居中。
+本修复版生成的 `graph.html` **已将 D3.js 内联**（约 280KB），完全自包含，不需要任何网络连接。双击即可直接在浏览器中打开使用，内网/离线环境均可正常工作。
+
+### 节点堆积在左上角怎么办？
+
+本修复版已在模板中内置了 `position:fixed` 修复，绝大多数情况下图会自动居中显示。如果仍有问题，按 F12 打 Console，粘贴以下备用脚本：
 
 ```javascript
 var svgEl = svg.node();
@@ -176,7 +180,6 @@ scale = Math.max(scale, 0.9);
 var tx = window.innerWidth / 2 - (b.x + b.width / 2) * scale;
 var ty = window.innerHeight / 2 - (b.y + b.height / 2) * scale;
 svg.transition().duration(500).call(zoomBehavior.transform, d3.zoomIdentity.translate(tx, ty).scale(scale));
-console.log("Done. Scale:", scale, "BBox:", b.width, b.height);
 ```
 
 ---
@@ -201,4 +204,8 @@ console.log("Done. Scale:", scale, "BBox:", b.width, b.height);
 -   **解决**：
     -   建议仅将 RTL 设计文件所在子目录（如 `./rtl`）纳入 Git 管理
     -   方式：进入 `rtl` 目录执行 `git init`（避免管理到上层验证脚本及工具链文件）。
+
+### 4. 打开 graph.html 一直显示 Loading / 图不动
+-   **原因**：使用旧版模板生成的 HTML 从 `d3js.org` CDN 加载 D3.js，内网被拦截。
+-   **解决**：本修复版已将 D3.js 内联到 HTML 中（280KB，完全自包含）。重新执行 `code-review-graph visualize` 生成即可。验证命令：`grep "Copyright.*Mike Bostock" .code-review-graph\graph.html` 有输出说明已内联。
 
