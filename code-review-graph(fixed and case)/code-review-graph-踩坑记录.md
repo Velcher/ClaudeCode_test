@@ -183,10 +183,11 @@ code-review-graph visualize
 
 | 文件 | 位置 | 作用 |
 |---|---|---|
-| `parse_check.py` | `code_review_graph/` 源码 | 解析质控检查，`build` 时自动调用 |
-| `check_parse.py` | `E:\ClaudeCode_test\` | 独立版检查脚本（命令行直接调用） |
-| `sync_crg.py` | `E:\ClaudeCode_test\` | 同步修复版源码到 site-packages |
-| `offline_pkgs/` | `E:\ClaudeCode_test\` | 离线部署包（80 个 .whl + README） |
+| `parse_check.py` | `code-review-graph-main/code_review_graph/` | 解析质控检查，`build` 时自动调用 |
+| `check_parse.py` | 本压缩包根目录 | 独立版检查脚本 |
+| `sync_crg.py` | 本压缩包根目录 | 同步修复版源码到 site-packages，已自动检测路径 |
+| `offline_pkgs/` | 本压缩包根目录 | 离线部署包（80 个 .whl + README） |
+| `code-review-graph-build.bat` | 本压缩包根目录 | 先检查解析质量再构建的 wrapper |
 
 ---
 
@@ -219,3 +220,59 @@ module pcie_s10_if_tx #
 - 手写 Verilog 时，`#(` 和第一个 `parameter` 之间不要插注释
 - 遇到 ERROR 率超过 5% 的文件，优先检查模块声明处的特殊写法
 - 这个限制不影响传统 Verilog-2001 的无参数模块（`module my_mod (...)` 不会有这个问题）
+
+---
+
+## 9. graph.html 打开一直 "Laying out graph..." / D3.js CDN 加载失败
+
+**现象**：双击 `graph.html`，一直显示 loading spinner 和 "Laying out graph..."，永远不结束。
+
+**排查**：F12 打开 Console，输入 `typeof d3` — 返回 `"undefined"` 说明 D3.js 没加载。Network 面板显示 `d3js.org` 请求被代理/防火墙拦截。
+
+**根因**：原版 `graph.html` 通过 CDN 加载 D3.js：
+```html
+<script src="https://d3js.org/d3.v7.min.js" ...></script>
+```
+内网环境或代理环境下，`d3js.org` 无法访问，整个页面无法渲染。
+
+**修复**（✅ 已实施）：修改了 `visualization.py` 的 `_HTML_TEMPLATE` 和 `_AGGREGATED_HTML_TEMPLATE`，将 CDN `<script src="d3js.org">` 替换为 `<script>d3.v7.min.js 内联代码</script>`（280KB）。现在 `code-review-graph visualize` 生成的 `graph.html` 约 330KB，**完全自包含，零网络依赖**。`file://` 双击即用，内网/离线环境均可。
+
+**验证**：
+```bash
+# 检查生成的 HTML 是否自包含
+grep "Copyright.*Mike Bostock" <项目>\.code-review-graph\graph.html
+# 如果有输出 → D3.js 已内联
+grep "d3js.org" <项目>\.code-review-graph\graph.html
+# 如果只有版权注释无 CDN 链接 → 自包含
+```
+
+**教训**：内网部署的工具，所有外部依赖必须下载后本地化或内联 - 不能依赖 CDN。
+
+---
+
+## 10. 硬编码绝对路径 & 外部网络依赖审计
+
+**审计时间**：2026-07-11，对各配置文件进行全量扫描。
+
+### 已修复的硬编码路径
+
+| 文件 | 修复前 | 修复后 |
+|---|---|---|
+| `sync_crg.py` | `src = r'E:\ClaudeCode_test\...'` | `os.path.dirname(__file__)` 相对路径 |
+| `sync_crg.py` | `site = r'C:\Users\elcher\...\site-packages'` | `site.getsitepackages()` 自动检测 |
+| `code-review-graph-build.bat` | `python E:\ClaudeCode_test\check_parse.py` | `python "%~dp0check_parse.py"` 相对路径 |
+
+### 外部网络依赖总览
+
+| 依赖 | 现状 | 影响 |
+|---|---|---|
+| **D3.js CDN** | ✅ 已内联（visualization.py 模板） | 不影响 — graph.html 完全自包含 |
+| **tree-sitter-language-pack** | 纯本地二进制包 | 不影响 — pip 离线安装即可 |
+| **嵌入向量 API**（embeddings.py） | 可选功能，需 `CRG_OPENAI_API_KEY` 等环境变量 | 不影响 — 不调用 `embed_graph` 则不使用 |
+| **GitHub API / PyPI** | build/visualize 不使用网络 | 不影响 — 正常流程完全离线 |
+
+### 结论
+
+本修复版的**核心功能**（`build` + `visualize`）完全离线可用。唯一需要外网的操作是 `pip install`（已通过离线包解决），以及可选的 `embed_graph` 语义搜索功能。
+
+**数据文件（graph.db、graph.html）均为本地文件，不涉及任何云传输。**

@@ -13,7 +13,7 @@ set REPO=%1
 echo ================================================================
 echo  Step 1/2: 检查 tree-sitter-verilog 解析质量
 echo ================================================================
-python E:\ClaudeCode_test\check_parse.py "%REPO%"
+python "%~dp0check_parse.py" "%REPO%"
 
 if %ERRORLEVEL% NEQ 0 (
     echo.
